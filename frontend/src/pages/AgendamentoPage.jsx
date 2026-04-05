@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { db } from "../firebase";
 import { collection, getDocs } from "firebase/firestore";
+import { auth } from "../firebase"; // ajuste o caminho se precisar
 
 import StepProfissional from "../components/agendamento/StepProfissional";
 import StepServico from "../components/agendamento/StepServico";
@@ -54,6 +55,7 @@ export default function AgendamentoPage() {
 
       } catch (error) {
         console.error("ERRO AO CARREGAR DADOS:", error);
+        console.log("USER:", auth.currentUser);
       }
     }
 

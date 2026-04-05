@@ -9,6 +9,14 @@ export default function StepProfissional({ profissionais, onSelect }) {
           onClick={() => onSelect(p)}
           className="bg-zinc-900 p-4 rounded-xl cursor-pointer hover:bg-zinc-800"
         >
+          {p.foto && (
+            <img
+              src={p.foto}
+              alt={p.nome}
+              className="w-12 h-12 rounded-full object-cover"
+            />
+          )}
+
           <h3 className="text-lg font-semibold">{p.nome}</h3>
           <p className="text-gray-400 text-sm">{p.especialidade}</p>
         </div>

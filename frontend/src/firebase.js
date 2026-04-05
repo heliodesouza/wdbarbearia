@@ -22,17 +22,14 @@ const app = initializeApp(firebaseConfig);
 // ✅ cria primeiro
 export const auth = getAuth(app);
 
+
 // ✅ depois configura
 setPersistence(auth, browserLocalPersistence);
 
 export const provider = new GoogleAuthProvider();
 export const db = getFirestore(app); // 🔥 banco
 export const storage = getStorage(app);
-
-console.log("ENV:", import.meta.env);
-console.log("API KEY:", import.meta.env.VITE_FIREBASE_API_KEY);
-console.log(import.meta.env)
-console.log(import.meta.env.VITE_TESTE);
+console.log("BUCKET:", import.meta.env.VITE_STORAGE_BUCKET);
 
 export default app;
 

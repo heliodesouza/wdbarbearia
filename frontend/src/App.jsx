@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { auth } from "./firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import Login from "./pages/Login";
+
 
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
@@ -13,6 +15,7 @@ import PlanPage from "./pages/PlanPage";
 import Dashboard from "./pages/dashboard/Dashboard";
 import AgendamentoPage from "./pages/AgendamentoPage";
 import Admin from "./pages/dashboard/Admin";
+import EscolhaAtendimento from "./pages/EscolhaAtendimento";
 
 import Sucesso from "./pages/Sucesso";
 import Erro from "./pages/Erro";
@@ -22,7 +25,6 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [premium, setPremium] = useState(false);
-
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -115,6 +117,8 @@ export default function App() {
           {/* 🔥 NOVA ROTA AGENDAR */}
           <Route path="/agendar" element={<AgendamentoPage />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/" element={<EscolhaAtendimento />} />
+          <Route path="/login" element={<Login />} />
 
           {/* 🔥 ROTAS DE PAGAMENTO */}
           <Route path="/success" element={<Sucesso />} />

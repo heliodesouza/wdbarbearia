@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { db, storage } from "../../firebase";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { db } from "../../firebase";
 import {
   collection,
   addDoc,
@@ -45,18 +44,25 @@ export default function AdminProfissionais() {
     let fotoUrl = "";
 
     try {
-      // 🔥 upload imagem
+      // 🔥 UPLOAD PARA CLOUDINARY
       if (imagem) {
-        const storageRef = ref(
-          storage,
-          `profissionais/${Date.now()}-${imagem.name}`
+        const data = new FormData();
+        data.append("file", imagem);
+        data.append("upload_preset", "wdbarbearia");
+
+        const res = await fetch(
+          "https://api.cloudinary.com/v1_1/doasqdnyf/image/upload",
+          {
+            method: "POST",
+            body: data,
+          }
         );
 
-        await uploadBytes(storageRef, imagem);
-        fotoUrl = await getDownloadURL(storageRef);
+        const file = await res.json();
+        fotoUrl = file.secure_url;
       }
 
-      // 🔥 salva no firestore
+      // 🔥 SALVA NO FIRESTORE
       await addDoc(collection(db, "profissionais"), {
         nome,
         especialidade,
@@ -104,7 +110,6 @@ export default function AdminProfissionais() {
           className="p-2 bg-zinc-800 rounded"
         />
 
-        {/* 🔥 upload */}
         <input
           type="file"
           accept="image/*"
@@ -112,7 +117,6 @@ export default function AdminProfissionais() {
           className="text-sm"
         />
 
-        {/* 🔥 preview */}
         {preview && (
           <img
             src={preview}
@@ -138,10 +142,9 @@ export default function AdminProfissionais() {
             className="flex items-center justify-between bg-zinc-900 p-3 rounded"
           >
             <div className="flex items-center gap-3">
-              {/* 🔥 imagem */}
               {p.foto && (
                 <img
-                  src={p.foto}
+                  src={p.foto && p.foto.startsWith("http") ? p.foto : "/default-user.png"}
                   alt={p.nome}
                   className="w-12 h-12 rounded-full object-cover"
                 />
